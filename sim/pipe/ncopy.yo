@@ -1,0 +1,78 @@
+                            | #/* $begin ncopy-ys */
+                            | ##################################################################
+                            | # ncopy.ys - Copy a src block of len words to dst.
+                            | # Return the number of positive words (>0) contained in src.
+                            | #
+                            | # Include your name and ID here.
+                            | #
+                            | # Describe how and why you modified the baseline code.
+                            | #
+                            | ##################################################################
+                            | # Do not modify this portion
+                            | # Function prologue.
+                            | # %rdi = src, %rsi = dst, %rdx = len
+0x000:                      | ncopy:
+                            | 
+                            | ##################################################################
+                            | # You can modify this portion
+                            | 	# Loop header
+0x000: 6300                 | 	xorq %rax,%rax	 # count = 0
+0x002: c0f2fcffffffffffffff | 	iaddq $-4,%rdx
+0x00c: 72e000000000000000   | 	jl Test2
+0x015:                      | Loop1:
+0x015: 50a70000000000000000 |     mrmovq (%rdi),%r10
+0x01f: 62aa                 |     andq %r10,%r10
+0x021: 40a60000000000000000 |     rmmovq %r10,(%rsi)
+0x02b: 713e00000000000000   |     jle Npos1
+0x034: c0f00100000000000000 |     iaddq $1,%rax
+0x03e:                      | Npos1:
+                            |     
+0x03e: 50a70800000000000000 |     mrmovq 8(%rdi),%r10
+0x048: 62aa                 |     andq %r10,%r10
+0x04a: 40a60800000000000000 |     rmmovq %r10,8(%rsi)
+0x054: 716700000000000000   |     jle Npos2
+0x05d: c0f00100000000000000 |     iaddq $1,%rax
+0x067:                      | Npos2:
+                            |     
+0x067: 50a71000000000000000 |     mrmovq 16(%rdi),%r10
+0x071: 62aa                 |     andq %r10,%r10
+0x073: 40a61000000000000000 |     rmmovq %r10,16(%rsi)
+0x07d: 719000000000000000   |     jle Npos3
+0x086: c0f00100000000000000 |     iaddq $1,%rax
+0x090:                      | Npos3:
+                            |     
+0x090: 50a71800000000000000 |     mrmovq 24(%rdi),%r10
+0x09a: 62aa                 |     andq %r10,%r10
+0x09c: 40a61800000000000000 |     rmmovq %r10,24(%rsi)
+0x0a6: 71b900000000000000   |     jle Npos4
+0x0af: c0f00100000000000000 |     iaddq $1,%rax
+0x0b9:                      | Npos4:
+                            |     
+0x0b9: c0f72000000000000000 |     iaddq $32, %rdi
+0x0c3: c0f62000000000000000 |     iaddq $32, %rsi
+0x0cd: c0f2fcffffffffffffff |     iaddq $-4, %rdx
+0x0d7: 761500000000000000   |     jg Loop1
+                            | 
+0x0e0:                      | Test2:
+0x0e0: c0f20400000000000000 |     iaddq $4,%rdx
+0x0ea: 734301000000000000   |     je Done
+0x0f3:                      | Loop2:
+0x0f3: 50a70000000000000000 |     mrmovq (%rdi), %r10	# read val from src...
+0x0fd: 62aa                 | 	andq %r10, %r10		# val <= 0?
+0x0ff: 711201000000000000   | 	jle Npos		# if so, goto Npos:
+0x108: c0f00100000000000000 | 	iaddq $1, %rax		# count++
+0x112:                      | Npos:
+0x112: 40a60000000000000000 | 	rmmovq %r10, (%rsi)	# ...and store it to dst
+0x11c: c0f70800000000000000 | 	iaddq $8, %rdi		# src++
+0x126: c0f60800000000000000 | 	iaddq $8, %rsi		# dst++
+0x130: c0f2ffffffffffffffff | 	iaddq $-1, %rdx		# len--	
+0x13a: 74f300000000000000   | 	jne Loop2			# if so, goto Loop:
+                            | ##################################################################
+                            | # Do not modify the following section of code
+                            | # Function epilogue.
+0x143:                      | Done:
+0x143: 90                   | 	ret
+                            | ##################################################################
+                            | # Keep the following label at the end of your function
+0x144:                      | End:
+                            | #/* $end ncopy-ys */
