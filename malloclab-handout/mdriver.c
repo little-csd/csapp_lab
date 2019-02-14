@@ -649,8 +649,6 @@ static int eval_mm_valid(trace_t *trace, int tracenum, range_t **ranges)
 	     */
         oldsize = trace->block_sizes[index];
 	    if (size < oldsize) oldsize = size;
-// 	    for (int k = 0; k < size; k+=16) 
-//                   printf("%d: %x   %x   %x   %x\n", k, *(unsigned int*)(newp + k), *(unsigned int*)(newp + k + 4), *(unsigned int*)(newp + k + 8), *(unsigned int*)(newp + k + 12));
         for (j = 0; j < oldsize; j++) {
 	      if (newp[j] != (index & 0xFF)) {
         malloc_error(tracenum, i, "mm_realloc did not preserve the "
