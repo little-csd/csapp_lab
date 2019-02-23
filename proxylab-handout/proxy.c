@@ -65,7 +65,6 @@ void backward(rio_t *rp, rio_t *rp_server, web_cache *cache, char *dst);
 void read_requesthdrs(rio_t *rp);
 void write_requesthdrs(int fd, char *method, char *filename, char *hostname, char *port);
 int parse_uri(char *uri, char *hostname, char *port, char *filename);
-void get_filetype(char *filename, char *filetype);
 void clienterror(int fd, char *cause, char *errnum, 
 		 char *shortmsg, char *longmsg);
 
@@ -253,24 +252,6 @@ int parse_uri(char *uri, char *hostname, char *port, char *filename)
     return 0;
 }
 /* $end parse_uri */
-
-/*
- * get_filetype - derive file type from file name
- */
-void get_filetype(char *filename, char *filetype) 
-{
-    if (strstr(filename, ".html"))
-        strcpy(filetype, "text/html");
-    else if (strstr(filename, ".gif"))
-        strcpy(filetype, "image/gif");
-    else if (strstr(filename, ".png"))
-        strcpy(filetype, "image/png");
-    else if (strstr(filename, ".jpg"))
-        strcpy(filetype, "image/jpeg");
-    else
-        strcpy(filetype, "text/plain");
-}  
-/* $end serve_static */
 
 /*
  * clienterror - returns an error message to the client
